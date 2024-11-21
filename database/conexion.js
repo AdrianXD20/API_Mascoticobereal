@@ -4,3 +4,5 @@ const sequalize = new Sequalize('process.env.db_name','process.env.db_user','pro
     host: 'process.env.db_host',
     dialect: 'mysql'
 })
+
+module.exports=sequalize;
