@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const Veterinario = require('../Models/veterinarioModel');
 
 class VeterinarioService{
@@ -16,17 +17,20 @@ class VeterinarioService{
     }
 
      async actualizarVeterinario(Id, datosActualizados){
-        const veterinario = await Mascota.findByPk(Id);
+        const veterinario = await Veterinario.findByPk(Id);
             if(veterinario){
-                return Veterinario.update(datosActualizados);
+                const updateRows = await Veterinario.update(datosActualizados,{where:{id:Id}})
+                    if(updateRows > 0){
+                        return Veterinario.findByPk(Id)
+                    }
             }
                 return null;
     }
 
     async eliminarVeterinario(Id){
-        const veterinario = await Mascota.findByPk(Id);
+        const veterinario = await Veterinario.findByPk(Id);
             if(veterinario){
-                return Veterinario.destroy();
+                return Veterinario.destroy({where:{id:Id}});
             }
                 return null;
     }

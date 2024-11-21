@@ -20,7 +20,10 @@ class ventaService{
     async actualizarVenta(Id, datosActualizados){
         const venta= await ventas.findByPk(Id);
         if (venta) {
-            return ventas.update(datosActualizados)
+            const updateRows = await ventas.update(datosActualizados,{where:{id:Id}});
+                if(updateRows > 0 ){
+                    return ventas.findByPk(Id)
+                }
         }
             return null
     }
@@ -28,7 +31,7 @@ class ventaService{
     async eliminarVenta(Id){
         const venta= await ventas.findByPk(Id);
         if (venta) {
-            return ventas.destroy()
+            return ventas.destroy({where:{id:Id}})
         }
             return null
     }

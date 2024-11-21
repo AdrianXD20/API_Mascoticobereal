@@ -19,7 +19,12 @@ class ProductoService {
     async actualizarProducto(Id, datosActualizados) {
       const productos = await Productos.findByPk(Id);
       if (productos) {
-        return Productos.update(datosActualizados)
+        const updateRows = await Productos.update(datosActualizados,{
+          where:{id:Id}
+        })  
+            if (updateRows > 0){
+              return Productos.findByPk(Id);
+            }
       }
         return null
     }
@@ -27,7 +32,9 @@ class ProductoService {
     async eliminarProducto(Id) {
       const productos = await Productos.findByPk(Id);
       if (productos) {
-        return Productos.destroy();
+        return Productos.destroy({
+          where:{id:Id}
+        });
       }
         return null
     }

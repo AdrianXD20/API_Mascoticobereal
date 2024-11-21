@@ -20,7 +20,12 @@ class extraService{
     async actualizarExtra(Id, datosActualizados){
         const extra= await Extra.findByPk(Id);
         if(extra){
-            return Extra.update(datosActualizados)
+            const updatedRows = await Extra.update(datosActualizados,{
+                where:{id:Id},
+            })
+            if(updatedRows > 0){
+                return await Extra.findByPk(Id)
+            }
         }
         return null
     }
@@ -28,7 +33,9 @@ class extraService{
     async eliminarExtra(Id){
         const extra= await Extra.findByPk(Id);
         if(extra){
-            return Extra.destroy();
+            return Extra.destroy({
+                where:{id:Id}
+            });
         }
             return null
     }

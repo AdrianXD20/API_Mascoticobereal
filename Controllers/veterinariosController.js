@@ -26,11 +26,11 @@ class VeterinarioController{
             res.json(veterinario)
            }
            else{
-            res.status(404).json({message:'Producto no encontrado'});
+            res.status(404).json({message:'Veterinario no encontrado'});
            }
         }catch(error){
         console.error('Error al obtener el veterianrio : ', error);
-        res.status(500).json({message:'No encontramos el Producto :(', error: error.message})
+        res.status(500).json({message:'No encontramos el Veterinario :(', error: error.message})
         }
     }
 
@@ -55,7 +55,7 @@ class VeterinarioController{
             if (veterinario) {
                 res.json(veterinario);
               } else {
-                res.status(404).json({ message: 'Producto no encontrado' });
+                res.status(404).json({ message: 'Veterinario no encontrado' });
               }
         }catch(error){
             console.error('Error al actualizar los datos : ', error);

@@ -43,13 +43,13 @@ const Ventas = sequelize.define('Ventas', {
 });
 
 Ventas.belongsTo(Productos,{
-    foreignkey: 'id_producto',
+    foreignKey: 'id_producto',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
 
 Ventas.belongsTo(Cliente,{
-    foreignkey: 'id_cliente',
+    foreignKey: 'id_cliente',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
