@@ -47,7 +47,7 @@ const Productos = sequelize.define('Productos', {
 });
 
 Productos.belongsTo(CaracteristicaExtra,{
-    foreignkey: 'idCaracteristicasExtras',
+    foreignKey: 'idCaracteristicasExtras',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });

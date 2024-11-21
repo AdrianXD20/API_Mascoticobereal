@@ -22,6 +22,7 @@ class extraService{
         if(extra){
             return Extra.update(datosActualizados)
         }
+        return null
     }
 
     async eliminarExtra(Id){
@@ -29,6 +30,7 @@ class extraService{
         if(extra){
             return Extra.destroy();
         }
+            return null
     }
 }
 
