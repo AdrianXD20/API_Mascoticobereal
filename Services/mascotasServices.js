@@ -1,32 +1,38 @@
-const MascotaRepository = require('../Repositories/mascotasRepository');
-const db = require('../database/conexion');
+const Mascota = require('../Models/mascotaModel'); // Importar el modelo
 
 class mascotasServices {
-  constructor() {
-    this.MascotaRepository = new MascotaRepository(db);
-    }
   
-    obtenerMascotas(page, limit) {
-      const offset= (page-1) * limit;
-      return this.MascotaRepository.obtenerMascotas(limit, offset);
-    }
-  
-    obtenerMascotasPorId(Id) {
-      return this.MascotaRepository.obtenerMascotasPorId(Id);
-    }
-  
-    crearMascotas(nuevoProducto) {
-      return this.MascotaRepository.crearMascotas(nuevoProducto);
-    }
-  
-    actualizarMascotas(Id, datosActualizados) {
-      return this.MascotaRepository.actualizarMascotas(Id, datosActualizados);
-    }
-  
-    eliminarMascotas(Id) {
-      return this.MascotaRepository.eliminarMascotas(Id);
-    }
+  async obtenerMascotas(page, limit) {
+    const offset = (page - 1) * limit;
+    return Mascota.findAll({
+      limit,
+      offset
+    });
   }
-  
-  module.exports = mascotasServices;
-  
+
+  async obtenerMascotasPorId(Id) {
+    return Mascota.findByPk(Id);
+  }
+
+  async crearMascotas(nuevoProducto) {
+    return Mascota.create(nuevoProducto); 
+  }
+
+  async actualizarMascotas(Id, datosActualizados) {
+    const mascota = await Mascota.findByPk(Id);
+    if (mascota) {
+      return mascota.update(datosActualizados);
+    }
+    return null; 
+  }
+
+  async eliminarMascotas(Id) {
+    const mascota = await Mascota.findByPk(Id);
+    if (mascota) {
+      return mascota.destroy(); 
+    }
+    return null;
+  }
+}
+
+module.exports = mascotasServices;
