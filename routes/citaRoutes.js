@@ -43,6 +43,40 @@ const citasController = new CitasController(citasService);
  *         - nombre_mascota
  *         - fecha
  */
+/**
+ * @swagger
+ * /citas:
+ *   get:
+ *     summary: Obtener todas las citas
+ *     tags: [Citas]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número de página (por defecto es 1)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Cantidad de registros por página (por defecto es 10)
+ *     responses:
+ *       200:
+ *         description: Lista de todas las citas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Citas'
+ *       404:
+ *         description: No se encontraron citas
+ */
+
 router.get('/citas', verifyToken, (req, res) => citasController.obtenerCitas(req, res));
 
 /**

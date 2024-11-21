@@ -1,29 +1,34 @@
-const veterinarioRepository = require ('../Repositories/veterinariosRepository')
-const db = require('../database/conexion')
+const Veterinario = require('../Models/veterinarioModel');
+
 class VeterinarioService{
-    constructor(){
-        this.veterinarioRepository = new veterinarioRepository(db)
-    }
-
-    obtenerVeterinarios(page,limit){
+   
+    async obtenerVeterinarios(page,limit){
         const offset = (page-1) * limit;
-        return this.veterinarioRepository.obtenerVeterinarios(limit, offset);
+        return Veterinario.findAll({limit, offset});
     }
 
-    obtenerVeterinarioPorId(Id){
-        return this.veterinarioRepository.obtenerVeterinarioPorId(Id);
+    async obtenerVeterinarioPorId(Id){
+        return Veterinario.findByPk(Id);
     }
 
-    crearVeterinario(nuevoVeterinario){
-        return this.veterinarioRepository.crearVeterinarios(nuevoVeterinario)
+    async crearVeterinario(nuevoVeterinario){
+        return Veterinario.create(nuevoVeterinario)
     }
 
-    actualizarVeterinario(Id, datosActualizados){
-        return this.veterinarioRepository.actualizarVeterinario(Id,datosActualizados)
+     async actualizarVeterinario(Id, datosActualizados){
+        const veterinario = await Mascota.findByPK(Id);
+            if(veterinario){
+                return Veterinario.update(datosActualizados);
+            }
+                return null;
     }
 
-    eliminarVeterinario(Id){
-        return this.veterinarioRepository.eliminarVeterinario(Id)
+    async eliminarVeterinario(Id){
+        const veterinario = await Mascota.findByPK(Id);
+            if(veterinario){
+                return Veterinario.destroy();
+            }
+                return null;
     }
 
 }

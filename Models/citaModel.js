@@ -1,51 +1,59 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexion');
+const Mascota = require('./mascotaModel'); // Asegúrate de tener este modelo definido
+const Veterinario = require('./veterinarioModel'); // Asegúrate de tener este modelo definido
+const Usuario = require('./UserModel'); // Asegúrate de tener este modelo definido
 
-const Citas = sequelize.define(
-  'Citas',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    id_mascota: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'mascotas', // Nombre de la tabla relacionada
-        key: 'id',
-      },
-    },
-    id_veterinario: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'veterinarios', // Nombre de la tabla relacionada
-        key: 'id',
-      },
-    },
-    id_usuario: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'usuarios', // Nombre de la tabla relacionada
-        key: 'id',
-      },
-    },
-    nombre_mascota: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    fecha: {
-      type: DataTypes.DATEONLY, // Para representar fechas sin hora
-      allowNull: true,
+const Cita = sequelize.define('Cita', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_mascota: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Mascota, 
+      key: 'id',
     },
   },
-  {
-    tableName: 'citas',
-    timestamps: false, // Asume que no hay columnas `createdAt` y `updatedAt`
-  }
-);
+  id_veterinario: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Veterinario,
+      key: 'id',
+    },
+  },
+  id_usuario: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Usuario,
+      key: 'id',
+    },
+  },
+  nombre_mascota: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  fecha: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+}, {
+  tableName: 'citas', 
+  timestamps: false,
+});
 
-module.exports = Citas;
+Cita.belongsTo(Mascota, { foreignKey: 'id_mascota' });
+
+Cita.belongsTo(Veterinario, { foreignKey: 'id_veterinario' });
+
+Cita.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+
+module.exports = Cita;

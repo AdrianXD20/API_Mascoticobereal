@@ -26,8 +26,8 @@ const Mascota = sequelize.define('Mascota', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'usuarios', // Nombre del modelo de referencia
-      key: 'id',         // Columna de la clave primaria de Usuarios
+      model: 'usuarios', 
+      key: 'id',         
     },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -37,9 +37,9 @@ const Mascota = sequelize.define('Mascota', {
   timestamps: false,
 });
 
-// Relación: una Mascota pertenece a un Usuario
+
 Mascota.belongsTo(User, {
-  foreignKey: 'id_usuario', // Campo que hace la referencia en la tabla Mascotas
+  foreignKey: 'id_usuario',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
