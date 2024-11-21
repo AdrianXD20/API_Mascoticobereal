@@ -1,30 +1,35 @@
-const productoRepository = require('../Repositories/productoRepository');
-const db = require('../database/conexion');
+const Productos = require('../Models/productosModel')
 
 class ProductoService {
-  constructor() {
-    this.productoRepository = new productoRepository(db);
-    }
   
-    obtenerProductos(page, limit) {
+  
+    async obtenerProductos(page, limit) {
       const offset = (page - 1) * limit;
-      return this.productoRepository.obtenerProductos(limit, offset);
+      return Productos.findAll({limit,offset});
     }
   
-    obtenerProductoPorId(Id) {
-      return this.productoRepository.obtenerProductoPorId(Id);
+    async obtenerProductoPorId(Id) {
+      return Productos.findByPk(Id);
     }
   
-    crearProducto(nuevoProducto) {
-      return this.productoRepository.crearProducto(nuevoProducto);
+    async crearProducto(nuevoProducto) {
+      return Productos.create(nuevoProducto);
     }
   
-    actualizarProducto(Id, datosActualizados) {
-      return this.productoRepository.actualizarProducto(Id, datosActualizados);
+    async actualizarProducto(Id, datosActualizados) {
+      const productos = await Productos.findByPk(Id);
+      if (productos) {
+        return Productos.update(datosActualizados)
+      }
+        return null
     }
   
-    eliminarProducto(Id) {
-      return this.productoRepository.eliminarProducto(Id);
+    async eliminarProducto(Id) {
+      const productos = await Productos.findByPk(Id);
+      if (productos) {
+        return Productos.destroy();
+      }
+        return null
     }
   }
   

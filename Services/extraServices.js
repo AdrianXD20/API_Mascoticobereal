@@ -1,30 +1,34 @@
-const db = require('../database/conexion')
-const extraRepository = require('../Repositories/extraRepository')
+const Extra= require('../Models/caracteristicasExtraModel')
 
 class extraService{
-    constructor(){
-        this.extraRepository =  new extraRepository(db)
-    }
+    
+    
 
-    obtenerExtra(page, limit){
+    async obtenerExtra(page, limit){
         const offset = (page-1) * limit;
-        return this.extraRepository.obtenerExtra(limit, offset);
+       return Extra.findAll({limit,offset});
     }
 
-    obtenerExtraPorId(Id){
-        return this.extraRepository.obtenerExtraPorId(Id);
+    async obtenerExtraPorId(Id){
+        return Extra.findByPk(Id);
     }
 
-    crearExtra(nuevoExtra){
-        return this.extraRepository.crearExtra(nuevoExtra);
+    async crearExtra(nuevoExtra){
+        return Extra.create(nuevoExtra);
     }
 
-    actualizarExtra(Id, datosActualizados){
-        return this.extraRepository.actualizarExtra(Id, datosActualizados);
+    async actualizarExtra(Id, datosActualizados){
+        const extra= await Extra.findByPk(Id);
+        if(extra){
+            return Extra.update(datosActualizados)
+        }
     }
 
-    eliminarExtra(Id){
-        return this.extraRepository.eliminarExtra(Id);
+    async eliminarExtra(Id){
+        const extra= await Extra.findByPk(Id);
+        if(extra){
+            return Extra.destroy();
+        }
     }
 }
 

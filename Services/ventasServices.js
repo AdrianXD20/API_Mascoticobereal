@@ -1,31 +1,37 @@
-const db = require('../database/conexion')
-const ventaRepository = require('../Repositories/ventasRepository')
+const { off } = require('process');
+const ventas = require('../Models/ventasModel')
 
-class extraService{
-    constructor(){
-        this.ventaRepository =  new ventaRepository(db)
-    }
+class ventaService{
+    
 
-    obtenerVentas(page,limit){
+    async obtenerVentas(page,limit){
         const offset = (page -1) * limit
-        return this.ventaRepository.obtenerVentas(limit,offset);
+        return ventas.findAll({limit,offset});
     }
 
-    obtenerVentaPorId(Id){
-        return this.ventaRepository.obtenerVentaPorId(Id);
+    async obtenerVentaPorId(Id){
+        return ventas.findByPk(Id);
     }
 
-    crearVenta(nuevoExtra){
-        return this.ventaRepository.crearVenta(nuevoExtra);
+    async crearVenta(nuevoExtra){
+        return ventas.create(nuevoExtra);
     }
 
-    actualizarVenta(Id, datosActualizados){
-        return this.ventaRepository.actualizarVenta(Id, datosActualizados);
+    async actualizarVenta(Id, datosActualizados){
+        const venta= await ventas.findByPk(Id);
+        if (venta) {
+            return ventas.update(datosActualizados)
+        }
+            return null
     }
 
-    eliminarVenta(Id){
-        return this.ventaRepository.eliminarVenta(Id);
+    async eliminarVenta(Id){
+        const venta= await ventas.findByPk(Id);
+        if (venta) {
+            return ventas.destroy()
+        }
+            return null
     }
 }
 
-module.exports = extraService
+module.exports = ventaService
