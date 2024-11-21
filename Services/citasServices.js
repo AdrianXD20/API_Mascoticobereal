@@ -17,7 +17,7 @@ class CitasServices {
     }
   
     async actualizarCitas(Id, datosActualizados) {
-      const cita= await Cita.findByPK(Id);
+      const cita= await Cita.findByPk(Id);
         if(cita){
           return Cita.update(datosActualizados);
         }
@@ -25,7 +25,7 @@ class CitasServices {
     }
   
     async eliminarCitas(Id) {
-      const cita = await Cita.findByPK(Id);
+      const cita = await Cita.findByPk(Id);
       if(cita){
         return Cita.destroy();
       }

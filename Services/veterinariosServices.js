@@ -16,7 +16,7 @@ class VeterinarioService{
     }
 
      async actualizarVeterinario(Id, datosActualizados){
-        const veterinario = await Mascota.findByPK(Id);
+        const veterinario = await Mascota.findByPk(Id);
             if(veterinario){
                 return Veterinario.update(datosActualizados);
             }
@@ -24,7 +24,7 @@ class VeterinarioService{
     }
 
     async eliminarVeterinario(Id){
-        const veterinario = await Mascota.findByPK(Id);
+        const veterinario = await Mascota.findByPk(Id);
             if(veterinario){
                 return Veterinario.destroy();
             }
