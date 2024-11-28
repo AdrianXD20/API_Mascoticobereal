@@ -43,6 +43,27 @@ const Veterinario = sequelize.define('Veterinario', {
       notEmpty: true,
     },
   },
+  email: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    unique: true, 
+    validate: {
+      notEmpty: true,
+      isEmail: true, 
+    },
+  },
+  contraseña: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [8, 255], 
+    },
+  },
+  imagen_perfil:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   tableName: 'veterinarios', 
   timestamps: false, 

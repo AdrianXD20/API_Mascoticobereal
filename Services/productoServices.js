@@ -16,9 +16,12 @@ class ProductoService {
       return Productos.create(nuevoProducto);
     }
   
-    async actualizarProducto(Id, datosActualizados) {
+    async actualizarProducto(Id, datosActualizados,imagen=null) {
       const productos = await Productos.findByPk(Id);
       if (productos) {
+        if(imagen){
+          datosActualizados.imagen = imagen
+        }
         const updateRows = await Productos.update(datosActualizados,{
           where:{id:Id}
         })  

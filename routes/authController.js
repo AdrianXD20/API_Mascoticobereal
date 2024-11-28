@@ -8,10 +8,6 @@ const UserRepository = require('../Repositories/UserRepository.js');
 const { verifyToken } = require('../middleware/authMiddleware.js');
 
 
-
-
-
-////(/)
 const userRepository = new UserRepository();
 const userService = new authService(userRepository);
 const userController = new UsuarioController(userService)

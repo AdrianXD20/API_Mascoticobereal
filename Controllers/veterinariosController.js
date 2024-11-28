@@ -47,10 +47,30 @@ class VeterinarioController{
         }
     }
 
+    async loginVeterinario(req,res){
+       try{ 
+            const {email, contraseña} = req.body;
+            
+            if (!email || !contraseña) {
+                return res.status(400).json({mesage: 'Faltan datos por rellenar'})   
+            }
+
+                const {JWT,veterinario} = await this.veterinarioService.loginVeterinario(email,contraseña);
+                res.status(200).json({JWT,veterinario})
+        }catch(error){
+            console.error('Error al logear veterianrio: ', error);
+            res.status(400).json({message: 'Credenciales invalidas:', error: error,message})
+
+        }
+    }
+
     async actualizarVeterinario(req,res){
         try{
             const id= req.params.id;
             const datosActualizados = req.body;
+            if(req.file){
+                datosActualizados.imagen = req.file.path
+            }
             const veterinario = await this.veterinarioService.actualizarVeterinario(id,datosActualizados);
             if (veterinario) {
                 res.json(veterinario);

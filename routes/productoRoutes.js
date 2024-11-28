@@ -1,15 +1,16 @@
-    const express = require('express');
-    const router = express.Router();
-    const ProductoController = require('../Controllers/productoController');
-    const ProductoService = require('../Services/productoServices');
-    const ProductoRepository = require('../Repositories/productoRepository');
-    const {verifyToken} = require('../middleware/authMiddleware')
+const express = require('express');
+const router = express.Router();
+const ProductoController = require('../Controllers/productoController');
+const ProductoService = require('../Services/productoServices');
+const ProductoRepository = require('../Repositories/productoRepository');
+const { verifyToken } = require('../middleware/authMiddleware');
+const upload = require('../middleware/multer');
 
-    const productoRepository = new ProductoRepository();
-    const productoService = new ProductoService(productoRepository);
-    const productoController = new ProductoController(productoService);
+const productoRepository = new ProductoRepository();
+const productoService = new ProductoService(productoRepository);
+const productoController = new ProductoController(productoService);
 
-    /**
+/**
  * @swagger
  * components:
  *   schemas:
@@ -41,10 +42,14 @@
  *         idCaracteristicasExtras:
  *           type: integer
  *           example: 2
+ *         imagen:
+ *           type: string
+ *           example: "/uploads/collar-perro.jpg"
  *       required:
  *         - id
  *         - nombre
  *         - precio
+ *         - imagen
  */
 
 /**
@@ -80,7 +85,7 @@
  *       404:
  *         description: No se encontraron productos
  */
-    router.get('/productos', verifyToken, (req, res) => productoController.obtenerProductos(req, res));
+router.get('/productos', verifyToken, (req, res) => productoController.obtenerProductos(req, res));
 
 /**
  * @swagger
@@ -107,33 +112,52 @@
  *       404:
  *         description: Producto no encontrado
  */
-    router.get('/productos/:id', verifyToken, (req, res) => productoController.obtenerProductoPorId(req, res));
+router.get('/productos/:id', verifyToken, (req, res) => productoController.obtenerProductoPorId(req, res));
 
 /**
  * @swagger
  * /productos:
  *   post:
- *     summary: Crear un nuevo producto
+ *     summary: Crear un nuevo producto con imagen
  *     tags: [Productos]
  *     security:
  *       - bearerAuth: []  
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Producto'
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 example: "Collar para perro"
+ *               marca:
+ *                 type: string
+ *                 example: "Marca Ejemplo"
+ *               mascota:
+ *                 type: string
+ *                 example: "Perro"
+ *               edad:
+ *                 type: string
+ *                 example: "Adulto"
+ *               precio:
+ *                 type: number
+ *                 format: float
+ *                 example: 49.99
+ *               stock:
+ *                 type: integer
+ *                 example: 100
+ *               imagen:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Producto creado exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Producto'
  *       400:
  *         description: Error en la solicitud
  */
-    router.post('/productos', verifyToken, (req, res) => productoController.crearProducto(req, res));
+router.post('/productos', verifyToken, upload.single('imagen'), (req, res) => productoController.crearProducto(req, res));
 
 /**
  * @swagger
@@ -143,28 +167,37 @@
  *     tags: [Productos]
  *     security:
  *       - bearerAuth: []  
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del producto a actualizar
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Producto'
- *     responses:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 example: "Collar para perro"
+ *               marca:
+ *                 type: string
+ *                 example: "Marca Ejemplo"
+ *               precio:
+ *                 type: number
+ *                 format: float
+ *                 example: 49.99
+ *               stock:
+ *                 type: integer
+ *                 example: 100
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *       responses:
  *       200:
- *         description: Producto actualizado exitosamente
- *       400:
- *         description: Error en la solicitud
+ *         description: Producto eliminado exitosamente
  *       404:
  *         description: Producto no encontrado
  */
-    router.put('/productos/:id', verifyToken, (req, res) => productoController.actualizarProducto(req, res));
+router.put('/productos/:id', verifyToken, upload.single('imagen'), (req, res) => productoController.actualizarProducto(req, res));
+
 /**
  * @swagger
  * /productos/{id}:
@@ -172,7 +205,7 @@
  *     summary: Eliminar un producto por ID
  *     tags: [Productos]
  *     security:
- *       - bearerAuth: []  
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -186,7 +219,6 @@
  *       404:
  *         description: Producto no encontrado
  */
-    router.delete('/productos/:id', verifyToken, (req, res) => productoController.eliminarProducto(req, res));
+router.delete('/productos/:id', verifyToken, (req, res) => productoController.eliminarProducto(req, res));
 
-
-    module.exports = router;
+module.exports = router;

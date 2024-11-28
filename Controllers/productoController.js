@@ -34,6 +34,9 @@ class ProductoController {
   async crearProducto(req, res) {
     try {
       const nuevoProducto = req.body;
+      if (req.file) {
+        nuevoProducto.imagen = req.file.path; 
+      }
       const producto = await this.productoService.crearProducto(nuevoProducto);
       res.status(201).json(producto);
     } catch (error) {
@@ -46,6 +49,9 @@ class ProductoController {
     try {
       const id = req.params.id;
       const datosActualizados = req.body;
+      if (req.file) {
+        datosActualizados.imagen = req.file.path; 
+      }
       const producto = await this.productoService.actualizarProducto(id, datosActualizados);
       if (producto) {
         res.json(producto);

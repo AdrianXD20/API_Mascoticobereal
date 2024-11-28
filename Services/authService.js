@@ -8,11 +8,11 @@ class UserService {
 
   async crearUsuario(nuevoUsuario) {
     try {
-      // Encriptar la contraseña
+      
       const hashedPassword = await bcrypt.hash(nuevoUsuario.contraseña, 10);
       nuevoUsuario.contraseña = hashedPassword;
 
-      // Crear el usuario en la base de datos
+      
       const usuarioCreado = await User.create(nuevoUsuario);
       return usuarioCreado;
     } catch (error) {
@@ -22,14 +22,14 @@ class UserService {
 
   async login(email, contraseña) {
     try {
-      // Buscar el usuario por email
+      
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
         throw new Error('Usuario no encontrado');
       }
 
-      // Verificar la contraseña
+      
       const isPasswordValid = await bcrypt.compare(contraseña, user.contraseña);
       if (!isPasswordValid) {
         throw new Error('Contraseña incorrecta');
