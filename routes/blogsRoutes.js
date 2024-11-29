@@ -49,8 +49,6 @@ const blogController = new BlogControlller(blogService)
  *   get:
  *     summary: Obtener todos los blogs
  *     tags: [Blogs]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -76,7 +74,7 @@ const blogController = new BlogControlller(blogService)
  *       404:
  *         description: No se encontraron blogs
  */
-router.get('/blogs', verifyToken, (req,res) => blogController.obtenerBlogs(req,res));
+router.get('/blogs', (req,res) => blogController.obtenerBlogs(req,res));
 
 /**
  * @swagger
@@ -84,8 +82,6 @@ router.get('/blogs', verifyToken, (req,res) => blogController.obtenerBlogs(req,r
  *   get:
  *     summary: Obtener un blog por ID
  *     tags: [Blogs]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -103,7 +99,7 @@ router.get('/blogs', verifyToken, (req,res) => blogController.obtenerBlogs(req,r
  *       404:
  *         description: Blog no encontrado
  */
-router.get('/blogs/:id', verifyToken, (req,res) => blogController.obtenerBlogPorId(req,res));
+router.get('/blogs/:id', (req,res) => blogController.obtenerBlogPorId(req,res));
 
 /**
  * @swagger
