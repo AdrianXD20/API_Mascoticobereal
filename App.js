@@ -27,6 +27,7 @@ const allowed = [
     'http://localhost:5173',
     'https://api-mascoticos.onrender.com',
     'https://api-mascoticobereal.onrender.com',
+    'https://mascotico-web.vercel.app',
     'mysql://uq92kg8809ftify2:GzKZ4C98MmKvQvv32tP1@bpdddt3swjtee4chka49-mysql.services.clever-cloud.com:3306/bpdddt3swjtee4chka49%20Host%20bpdddt3swjtee4chka49-mysql.services.clever-cloud.com'
 ];
 
@@ -45,7 +46,7 @@ app.use(cors({
 app.use("/docs", swaggerUI.serve,swaggerUI.setup(specs))
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.static('Models')); 
+app.use(express.static('images')); 
 app.use(body.urlencoded({ extended: false }));
 app.use(body.json()); 
 
