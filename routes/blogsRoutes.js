@@ -1,0 +1,214 @@
+const express = require('express')
+const router = express.Router();
+const BlogControlller = require('../Controllers/blogsController');
+const BlogsService = require ('../Services/blogsServices')
+const {verifyToken} = require('../middleware/authMiddleware');
+const upload = require ('../middleware/multer')
+
+const blogService = new BlogsService()
+const blogController = new BlogControlller(blogService)
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Blog:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         titulo:
+ *           type: string
+ *           example: "Cómo cuidar a tu perro en verano"
+ *         imagen:
+ *           type: string
+ *           example: "/uploads/cuidado-perro-verano.jpg"
+ *         categoria:
+ *           type: string
+ *           example: "Consejos de cuidado"
+ *         id_veterinario:
+ *           type: integer
+ *           example: 3
+ *         fecha_publicacion:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-11-28T14:30:00Z"
+ *         contenido:
+ *           type: string
+ *           example: "En este blog te explicamos cómo mantener fresco a tu perro durante el verano..."
+ *       required:
+ *         - id
+ *         - titulo
+ *         - contenido
+ */
+
+/**
+ * @swagger
+ * /blogs:
+ *   get:
+ *     summary: Obtener todos los blogs
+ *     tags: [Blogs]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número de página (por defecto es 1)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Cantidad de registros por página (por defecto es 10) 
+ *     responses:
+ *       200:
+ *         description: Lista de todos los blogs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Blog'
+ *       404:
+ *         description: No se encontraron blogs
+ */
+router.get('/blogs', verifyToken, (req,res) => blogController.obtenerBlogs(req,res));
+
+/**
+ * @swagger
+ * /blogs/{id}:
+ *   get:
+ *     summary: Obtener un blog por ID
+ *     tags: [Blogs]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del blog a buscar
+ *     responses:
+ *       200:
+ *         description: Blog encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Blog'
+ *       404:
+ *         description: Blog no encontrado
+ */
+router.get('/blogs/:id', verifyToken, (req,res) => blogController.obtenerBlogPorId(req,res));
+
+/**
+ * @swagger
+ * /blogs:
+ *   post:
+ *     summary: Crear un nuevo blog con imagen
+ *     tags: [Blogs]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *                 example: "Cómo cuidar a tu perro en verano"
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *               categoria:
+ *                 type: string
+ *                 example: "Consejos de cuidado"
+ *               id_veterinario:
+ *                 type: integer
+ *                 example: 3
+ *               contenido:
+ *                 type: string
+ *                 example: "En este blog te explicamos cómo mantener fresco a tu perro durante el verano..."
+ *     responses:
+ *       201:
+ *         description: Blog creado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ */
+router.post('/blogs', verifyToken, upload.single('imagen'), (req,res)=> blogController.crearBlog(req,res));
+
+/**
+ * @swagger
+ * /blogs/{id}:
+ *   put:
+ *     summary: Actualizar un blog por ID
+ *     tags: [Blogs]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del blog a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *                 example: "Cómo cuidar a tu perro en verano"
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *               categoria:
+ *                 type: string
+ *                 example: "Consejos de cuidado"
+ *               id_veterinario:
+ *                 type: integer
+ *                 example: 3
+ *               contenido:
+ *                 type: string
+ *                 example: "Contenido actualizado del blog..."
+ *     responses:
+ *       200:
+ *         description: Blog actualizado exitosamente
+ *       404:
+ *         description: Blog no encontrado
+ */
+router.put('blogs/:id', verifyToken, upload.single('imagen'), (req,res) => blogController.actualizarBlog(req,res));
+
+/**
+ * @swagger
+ * /blogs/{id}:
+ *   delete:
+ *     summary: Eliminar un blog por ID
+ *     tags: [Blogs]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del blog a eliminar
+ *     responses:
+ *       200:
+ *         description: Blog eliminado exitosamente
+ *       404:
+ *         description: Blog no encontrado
+ */
+router.delete('blogs/:id', verifyToken, (req,res) => blogController.eliminarBlog(req,res));
+
+module.exports = router;
