@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexion');
 
+
 const Veterinario = sequelize.define('Veterinario', {
   id: {
     type: DataTypes.INTEGER,
@@ -64,6 +65,10 @@ const Veterinario = sequelize.define('Veterinario', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  rol:{
+    type: DataTypes.STRING(20),
+    defaultValue:'admin'
+  }
 }, {
   tableName: 'veterinarios', 
   timestamps: false, 

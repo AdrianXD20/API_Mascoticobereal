@@ -43,7 +43,7 @@ class VeterinarioService{
             }
 
             const JWT = jwt.sign(
-                {id:veterinario.id, email: veterinario.email, nombre: veterinario.nombre, dni: veterinario.dni},
+                {id:veterinario.id, email: veterinario.email, nombre: veterinario.nombre, dni: veterinario.dni, rol:veterinario.rol},
                 secretKey,{expiresIn: '1h'}
             );
 

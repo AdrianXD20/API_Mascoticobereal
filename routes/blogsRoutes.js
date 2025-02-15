@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const BlogControlller = require('../Controllers/blogsController');
 const BlogsService = require ('../Services/blogsServices')
-const {verifyToken} = require('../middleware/authMiddleware');
+const {verifyToken,isAdmin} = require('../middleware/authMiddleware');
 const upload = require ('../middleware/multer')
 
 const blogService = new BlogsService()
@@ -137,7 +137,7 @@ router.get('/blogs/:id', (req,res) => blogController.obtenerBlogPorId(req,res));
  *       400:
  *         description: Error en la solicitud
  */
-router.post('/blogs', verifyToken, upload.single('imagen'), (req,res)=> blogController.crearBlog(req,res));
+router.post('/blogs', verifyToken,isAdmin, upload.single('imagen'), (req,res)=> blogController.crearBlog(req,res));
 
 /**
  * @swagger
@@ -182,7 +182,7 @@ router.post('/blogs', verifyToken, upload.single('imagen'), (req,res)=> blogCont
  *       404:
  *         description: Blog no encontrado
  */
-router.put('blogs/:id', verifyToken, upload.single('imagen'), (req,res) => blogController.actualizarBlog(req,res));
+router.put('blogs/:id', verifyToken,isAdmin, upload.single('imagen'), (req,res) => blogController.actualizarBlog(req,res));
 
 /**
  * @swagger
@@ -205,6 +205,6 @@ router.put('blogs/:id', verifyToken, upload.single('imagen'), (req,res) => blogC
  *       404:
  *         description: Blog no encontrado
  */
-router.delete('blogs/:id', verifyToken, (req,res) => blogController.eliminarBlog(req,res));
+router.delete('blogs/:id', verifyToken,isAdmin, (req,res) => blogController.eliminarBlog(req,res));
 
 module.exports = router;

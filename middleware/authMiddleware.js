@@ -18,5 +18,12 @@ function verifyToken(req, res, next) {
     }
 }
 
+function isAdmin(req,res,next){
+    if (req.user.rol !== 'admin'){
+        return res.status(403).json({error :"Acceso denegado Plebi"})
+    }
+    next();
+};
 
-module.exports = { verifyToken };
+
+module.exports = { verifyToken, isAdmin };

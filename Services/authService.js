@@ -1,6 +1,10 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/UserModel');
+require('dotenv').config();
+
 const secretKey = process.env.secretKey;
 
 class UserService {
@@ -37,7 +41,7 @@ class UserService {
 
     
       const JWT = jwt.sign(
-        { id: user.id, email: user.email, nombre: user.nombre },
+        { id: user.id, email: user.email, nombre: user.nombre,rol:user.rol},
         secretKey,
         { expiresIn: '1h' }
       );
@@ -47,6 +51,53 @@ class UserService {
       throw new Error('Error en el proceso de login: ' + error.message);
     }
   }
+
+  async resetearPassword(token, nuevaContraseña) {
+    const user = await User.findOne({ where: { resetToken: token } });
+
+    if (!user || user.resetTokenExpira < new Date()) return null; // Token inválido o expirado
+
+    const hashedPassword = await bcrypt.hash(nuevaContraseña, 10);
+    await user.update({ contraseña: hashedPassword, resetToken: null, resetTokenExpira: null });
+
+    return { message: 'Contraseña actualizada correctamente' };
+  }
+
+  async solicitarRecuperacion(email) {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return { message: 'Si el email existe, se enviará un correo' }; // No revelar si el usuario existe o no
+  
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenExpira = new Date(Date.now() + 3600000);
+  
+    await user.update({ resetToken: token, resetTokenExpira: tokenExpira });
+  
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { 
+        user: process.env.email, 
+        pass: process.env.email_password 
+      }
+    });
+  
+    const mailOptions = {
+      from: process.env.email,
+      to: user.email,
+      subject: 'Recuperación de contraseña',
+      text: `Usa el siguiente enlace para restablecer tu contraseña: http://tudominio.com/reset-password?token=${token}`
+    };
+  
+    try {
+      let info = await transporter.sendMail(mailOptions);
+      console.log('Correo enviado: ', info.response);
+      return { message: 'Correo enviado correctamente' };
+    } catch (error) {
+      console.error('Error al enviar correo: ', error);
+      return { error: 'No se pudo enviar el correo' };
+    }
+  }
+  
+
 }
 
 module.exports = UserService;

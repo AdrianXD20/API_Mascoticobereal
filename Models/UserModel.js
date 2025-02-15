@@ -24,6 +24,15 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  rol:{
+    type: DataTypes.STRING(10),
+    defaultValue: 'usuario'
+
+  },
+  resetToken: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }  
 }, {
   tableName: 'usuarios',
   timestamps: false,

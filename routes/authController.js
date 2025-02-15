@@ -130,4 +130,109 @@ router.post('/register',(req,res) => userController.crearUsuario(req,res));
  */
 router.post('/login',(req,res)=> userController.login(req,res));
 
+  /**
+ * @swagger
+ * /recuperar:
+ *   post:
+ *     summary: Solicitar recuperación de contraseña.
+ *     description: Envía un correo con un enlace para restablecer la contraseña del usuario.
+ *     tags:
+ *       - Autenticación
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo electrónico del usuario registrado
+ *     responses:
+ *       200:
+ *         description: Se envió el correo de recuperación exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje confirmando el envío del correo
+ *       400:
+ *         description: Error en la solicitud (correo no registrado o inválido)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Mensaje de error
+ *       500:
+ *         description: Error en el servidor
+ */
+  router.post('/recuperar', async (req, res) => {
+    const { email } = req.body;
+    const response = await userService.solicitarRecuperacion(email);
+    res.json(response);
+  });
+/**
+ * @swagger
+ * /resetear:
+ *   post:
+ *     summary: Restablecer contraseña.
+ *     description: Permite al usuario restablecer su contraseña usando un token de recuperación.
+ *     tags:
+ *       - Autenticación
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - nuevaContraseña
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 description: Token de recuperación enviado al usuario
+ *               nuevaContraseña:
+ *                 type: string
+ *                 description: Nueva contraseña del usuario (mínimo 6 caracteres)
+ *     responses:
+ *       200:
+ *         description: Contraseña restablecida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de confirmación
+ *       400:
+ *         description: Error en la solicitud (token inválido o expirado)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Mensaje de error
+ *       500:
+ *         description: Error en el servidor
+ */
+ // Ruta para restablecer la contraseña
+ router.post('/resetear', async (req, res) => {
+    const { token, nuevaContraseña } = req.body;
+    const response = await userService.resetearPassword(token, nuevaContraseña);
+    res.json(response);
+  });
+
 module.exports = router;

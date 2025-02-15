@@ -4,56 +4,37 @@ const Mascota = require('./mascotaModel'); // Asegúrate de tener este modelo de
 const Veterinario = require('./veterinarioModel'); // Asegúrate de tener este modelo definido
 const Usuario = require('./UserModel'); // Asegúrate de tener este modelo definido
 
-const Cita = sequelize.define('Cita', {
+const Cita = sequelize.define('citas', {
   id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+     type: DataTypes.INTEGER,
+    autoIncrement: true, 
+    primaryKey: true 
   },
-  id_mascota: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Mascota, 
-      key: 'id',
+  nombre_cliente: { 
+    type: DataTypes.STRING(120), 
+    allowNull: false },
+  id_veterinario: { 
+    type: DataTypes.INTEGER, 
+    allowNull: false },
+  fecha_cita: {
+     type: DataTypes.DATEONLY, 
+     allowNull: false },
+  hora_cita: { 
+    type: DataTypes.TIME,
+     allowNull: false },
+  razon: { 
+    type: DataTypes.TEXT, 
+    allowNull: false },
+  mascota: { 
+    type: DataTypes.INTEGER, 
+    allowNull: false },
+  estado: {
+     type: DataTypes.ENUM('pendiente', 'confirmada', 'rechazada'), defaultValue: 'pendiente' 
     },
-  },
-  id_veterinario: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Veterinario,
-      key: 'id',
-    },
-  },
-  id_usuario: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Usuario,
-      key: 'id',
-    },
-  },
-  nombre_mascota: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-  fecha: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-  },
-}, {
-  tableName: 'citas', 
-  timestamps: false,
+  },{
+      tableName: 'citas',
+        timestamps: false
+      
 });
-
-Cita.belongsTo(Mascota, { foreignKey: 'id_mascota' });
-
-Cita.belongsTo(Veterinario, { foreignKey: 'id_veterinario' });
-
-Cita.belongsTo(Usuario, { foreignKey: 'id_usuario' });
 
 module.exports = Cita;
