@@ -5,9 +5,9 @@ class BlogControlller {
   
     async obtenerBlogs(req, res) {
       try {
-        const {page=1, limit} = req.query
+        const {page = 1, limit} = req.query
         const pageNumber= parseInt(page);
-        const pageSize = parseInt(limit);
+        const pageSize = parseInt(limit) || 10;
         const blogs = await this.blogsService.obtenerBlogs(pageNumber,pageSize);
         res.json(blogs);
       } catch (error) {
