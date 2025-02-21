@@ -4,7 +4,11 @@ const ProductoController = require('../Controllers/productoController');
 const ProductoService = require('../Services/productoServices');
 const ProductoRepository = require('../Repositories/productoRepository');
 const { verifyToken } = require('../middleware/authMiddleware');
+/*
 const upload = require('../middleware/multer');
+*/
+
+const upload = require('../middleware/cloudinary').upload;
 
 const productoRepository = new ProductoRepository();
 const productoService = new ProductoService(productoRepository);
@@ -167,6 +171,13 @@ router.post('/productos', verifyToken, upload.single('imagen'), (req, res) => pr
  *     tags: [Productos]
  *     security:
  *       - bearerAuth: []  
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de producto para actualizar
  *     requestBody:
  *       required: true
  *       content:

@@ -3,8 +3,11 @@ const router = express.Router();
 const BlogControlller = require('../Controllers/blogsController');
 const BlogsService = require ('../Services/blogsServices')
 const {verifyToken,isAdmin} = require('../middleware/authMiddleware');
+/*
 const upload = require ('../middleware/multer')
+*/
 
+const upload = require ('../middleware/cloudinary').upload;
 const blogService = new BlogsService()
 const blogController = new BlogControlller(blogService)
 

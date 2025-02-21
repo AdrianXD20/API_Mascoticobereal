@@ -33,10 +33,16 @@ class BlogControlller {
   
     async crearBlog(req, res) {
       try {
-        const nuevoBlog = req.body;
-        if (req.file) {
-          nuevoBlog.imagen = req.file.path; 
+        if(!req.file){
+          return res.status(400).json({ message: 'La imagen es obligatoria' });
         }
+        
+        const imagenUrl = req.file.path;
+        const nuevoBlog = {
+          ...req.body,
+          imagen: imagenUrl,
+        }
+    
         const blog = await this.blogsService.crearBlog(nuevoBlog);
         res.status(201).json(blog);
       } catch (error) {

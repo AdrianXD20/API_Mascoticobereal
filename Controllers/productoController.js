@@ -33,16 +33,24 @@ class ProductoController {
 
   async crearProducto(req, res) {
     try {
-      const nuevoProducto = req.body;
-      if (req.file) {
-        nuevoProducto.imagen = req.file.path; 
+      if (!req.file) {
+          return res.status(400).json({ message: 'La imagen es obligatoria' });
       }
+
+      // Obtener la URL de la imagen subida a Cloudinary
+      const imagenUrl = req.file.path;
+
+      const nuevoProducto = {
+          ...req.body,
+          imagen: imagenUrl, // Agregar la URL de Cloudinary
+      };
+
       const producto = await this.productoService.crearProducto(nuevoProducto);
       res.status(201).json(producto);
-    } catch (error) {
-      console.error('Error en crearProducto:', error); 
+  } catch (error) {
+      console.error('Error en crearProducto:', error);
       res.status(500).json({ message: 'Error al crear el producto', error: error.message });
-    }
+  }
   }
 
   async actualizarProducto(req, res) {
