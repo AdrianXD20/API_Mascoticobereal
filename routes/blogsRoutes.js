@@ -248,37 +248,22 @@ router.get('/blogs/veterinario/:id', (req, res) => blogController.obtenerBlogsPo
 
 /**
  * @swagger
- * /blogs/nombre:
+ * /blog/nombre:
  *   get:
  *     summary: Obtener blogs por nombre
- *     description: Obtiene una lista de blogs que coinciden con el nombre proporcionado.
+ *     description: Busca blogs cuyo título coincida parcialmente con el nombre ingresado.
  *     parameters:
  *       - in: query
  *         name: nombre
- *         required: true
- *         description: Nombre o título del blog.
  *         schema:
  *           type: string
+ *         required: true
+ *         description: Parte del título del blog que se desea buscar.
  *     responses:
  *       200:
- *         description: Lista de blogs que coinciden con el nombre.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   titulo:
- *                     type: string
- *                   contenido:
- *                     type: string
+ *         description: Lista de blogs encontrados.
  *       404:
- *         description: No se encontraron blogs con el nombre dado.
- *       500:
- *         description: Error interno del servidor.
+ *         description: No se encontraron blogs con ese nombre.
  */
 router.get('/blog/nombre', (req, res) => blogController.ObtenerBlogsPorNombre(req, res));
 
