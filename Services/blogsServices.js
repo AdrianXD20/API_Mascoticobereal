@@ -1,4 +1,8 @@
+const { Where } = require('sequelize/lib/utils');
 const Blogs = require('../Models/blogdModel')
+const Veterinario = require('../Models/veterinarioModel');
+const {Op} = require('sequelize')
+
 
 class BlogsService{
 
@@ -40,6 +44,37 @@ class BlogsService{
         }
           return null
       }
+
+      async obtenerBlogsPorVeterinarioId(veterinarioId) {
+        return Blogs.findAll({
+            where: { id_veterinario: veterinarioId },
+            include: [
+                {
+                    model: Veterinario,
+                    as: 'veterinario',
+                    attributes: ['nombre'] 
+                }
+            ]
+        });
+    }
+    
+    async ObtenerBlogsPorNombre(nombre) {
+      try {
+        const blogs = await Blogs.findAll({
+          where: {
+            titulo: {
+              [Op.like]: `%${nombre}%` 
+            }
+          }
+        });
+    
+        return blogs;
+      } catch (error) {
+        console.error("Error al obtener blogs por nombre:", error);
+        throw new Error("Error al obtener blogs por nombre");
+      }
+    }
+      
 }
 
 module.exports= BlogsService

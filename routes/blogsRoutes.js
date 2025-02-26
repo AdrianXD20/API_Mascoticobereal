@@ -185,7 +185,7 @@ router.post('/blogs', verifyToken,isAdmin, upload.single('imagen'), (req,res)=> 
  *       404:
  *         description: Blog no encontrado
  */
-router.put('blogs/:id', verifyToken,isAdmin, upload.single('imagen'), (req,res) => blogController.actualizarBlog(req,res));
+router.put('/blogs/:id', verifyToken,isAdmin, upload.single('imagen'), (req,res) => blogController.actualizarBlog(req,res));
 
 /**
  * @swagger
@@ -208,6 +208,78 @@ router.put('blogs/:id', verifyToken,isAdmin, upload.single('imagen'), (req,res) 
  *       404:
  *         description: Blog no encontrado
  */
-router.delete('blogs/:id', verifyToken,isAdmin, (req,res) => blogController.eliminarBlog(req,res));
+router.delete('/blogs/:id', verifyToken,isAdmin, (req,res) => blogController.eliminarBlog(req,res));
+
+/**
+ * @swagger
+ * /blogs/veterinario/{id}:
+ *   get:
+ *     summary: Obtener blogs por veterinario
+ *     description: Obtiene una lista de blogs publicados por un veterinario específico.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del veterinario.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de blogs.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   titulo:
+ *                     type: string
+ *                   contenido:
+ *                     type: string
+ *       404:
+ *         description: No se encontraron blogs para este veterinario.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/blogs/veterinario/:id', (req, res) => blogController.obtenerBlogsPorVeterinarioId(req, res));
+
+/**
+ * @swagger
+ * /blogs/nombre:
+ *   get:
+ *     summary: Obtener blogs por nombre
+ *     description: Obtiene una lista de blogs que coinciden con el nombre proporcionado.
+ *     parameters:
+ *       - in: query
+ *         name: nombre
+ *         required: true
+ *         description: Nombre o título del blog.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de blogs que coinciden con el nombre.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   titulo:
+ *                     type: string
+ *                   contenido:
+ *                     type: string
+ *       404:
+ *         description: No se encontraron blogs con el nombre dado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/blog/nombre', (req, res) => blogController.ObtenerBlogsPorNombre(req, res));
 
 module.exports = router;

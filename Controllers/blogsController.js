@@ -84,6 +84,41 @@ class BlogControlller {
         res.status(500).json({ message: 'Error al eliminar el Blog', error: error.message });
       }
     }
+
+    async obtenerBlogsPorVeterinarioId(req, res) {
+      try {
+        const veterinarioId = req.params.id;
+        const blogs = await this.blogsService.obtenerBlogsPorVeterinarioId(veterinarioId);
+        if (blogs.length > 0) {
+          res.json(blogs);
+        } else {
+          res.status(404).json({ message: 'No hay blogs publicados por este veterinario' });
+        }
+      } catch (error) {
+        console.error('Error en ObtenerBlogsPorVeterinarioId:', error);
+        res.status(500).json({ message: 'Error al obtener los blogs del veterinario', error: error.message });
+      }
+    }
+
+    async ObtenerBlogsPorNombre(req, res) {
+      try {
+        const nombre = req.query.nombre; 
+        const blogs = await this.blogsService.ObtenerBlogsPorNombre(nombre); 
+    
+        if (blogs.length > 0) {
+          res.json(blogs);
+        } else {
+          res.status(404).json({ message: 'No se encontraron blogs con ese nombre' });
+        }
+      } catch (error) {
+        console.error('Error al obtener blogs por nombre:', error);
+        res.status(500).json({ message: 'Error interno al obtener los blogs', error: error.message });
+      }
+    }
+    
+    
+
+
   }
   
   module.exports = BlogControlller;

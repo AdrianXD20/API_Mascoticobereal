@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexion'); // Ajusta el path según tu configuración
-const veterianrios = require('./veterinarioModel')
+const veterinarios = require('./veterinarioModel')
 const Blog = sequelize.define('Blog', {
   id: {
     type: DataTypes.INTEGER,
@@ -46,5 +46,10 @@ const Blog = sequelize.define('Blog', {
   tableName: 'blogs', 
   timestamps: false, 
 });
+
+
+Blog.belongsTo(veterinarios, { foreignKey: 'id_veterinario', as: 'veterinario' });
+
+
 
 module.exports = Blog;
