@@ -30,7 +30,7 @@ class extraController{
               }
         }catch(err){
             console.error('Error al buscar una caracteristica extra: ', err);
-            res.status(500).json({message: 'Tuvimos un error en la busqueda', erro: err.message})  
+            res.status(500).json({message: 'Tuvimos un error en la busqueda', error: err.message})  
         }
     }
 

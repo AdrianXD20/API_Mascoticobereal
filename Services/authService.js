@@ -96,6 +96,43 @@ class UserService {
       return { error: 'No se pudo enviar el correo' };
     }
   }
+
+  async obtenerUsuarios(page, limit){
+    const offset = (page - 1) * limit;
+    return User.findAll({limit, offset})
+  }
+
+  async obtenerUsuarioId(Id,){
+    return User.findByPk(Id);
+  }
+
+  async actualizarUsuario(Id, datosActualizados, imagen= null){
+    const users = await User.findByPk(Id);
+    if(users){
+      if(imagen){
+        datosActualizados.imagen = imagen;
+      }
+      const update = await User.update(datosActualizados,{
+        where: {id:Id}
+      });
+      if (update > 0) {
+        return User.findByPk(Id)
+        
+      };
+      
+    }
+    return null
+  }
+
+  async eliminarUsuarios(Id){
+    const users = await User.findByPk(Id)
+    if(users){
+      return User.destroy({
+        where:{id:Id}
+      })
+    }
+    return null
+  }
   
 
 }

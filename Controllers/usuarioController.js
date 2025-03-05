@@ -1,3 +1,4 @@
+const { parse } = require("path");
 
 class UsuarioController{
     constructor(userService){
@@ -6,7 +7,11 @@ class UsuarioController{
 
     async crearUsuario(req, res) {
         try {
-          const nuevoUsuario = req.body;
+          if(!req.file){
+            return res.status(400).json({ message: 'La imagen es obligatoria' });
+          }
+          const imagen = req.file.path
+          const nuevoUsuario = {...req.body, imagen_perfil: imagen};
           const User = await this.userService.crearUsuario(nuevoUsuario);
           res.status(201).json(User);
         } catch (error) {
@@ -28,6 +33,69 @@ class UsuarioController{
             console.error('Error al logear el usuario :', error);
             res.status(401).json({ message: 'Credenciales inválidas', error: error.message });
         }
+    }
+
+    async obtenerUsuario(req,res){
+      try {
+        const {page = 1,limit} = req.query;
+        const pageNumber = parseInt(page);
+        const limitNumber = parseInt(limit);
+        const users = await this.userService.obtenerUsuarios(pageNumber,limitNumber)
+        res.status(201).json(users)
+        
+      } catch (error) {
+        console.error('Error al buscar usuarios: ', error);
+        res.status(401).json({message:'Tuvimos un error para obtener los usuarios.', error: error.message});
+      }
+    }
+
+    async obtenerUsuarioId(req,res){
+      try {
+        const id= req.params.id
+        const user = await this.userService.obtenerUsuarioId(id)
+        if(user){
+          res.status(201).json(user)
+        }
+        res.status(401).json({message:'Este Id no existe o no se encuentra disponible'})
+      } catch (error) {
+        console.error('Error al obtener usarios por Id:', error);
+        res.status(401).json({message: 'Tuvimos un error para obtener usuarios por Id.', error: error.message})
+      }
+    }
+
+    async actualizarUsuario(req,res){
+      try {
+        const id = req.params.id
+        const datosActualizados = req.body;
+        if(req.file){
+          datosActualizados.imagen_perfil = req.file.path;
+        }
+        const user = await this.userService.actualizarUsuario(id,datosActualizados);
+        if(user){
+          res.status(201).json(user)
+        }else{
+          res.status(404).json({message: 'Usuario no encontrado, revisa si existe ID'})
+        }
+      } catch (error) {
+        console.error('Error al actualiza usuario:', error);
+        res.status(404).json({message:'Problema al actualizar datos de usuario:', error: error.message})
+      }
+      
+    }
+
+    async eliminarUsuario(req,res){
+      try {
+        const id = req.params.id;
+        const user = await this.userService.eliminarUsuario(id)
+        if(user){
+          res.status(201).json(user)
+        }else{
+          res.status(401).json({message: 'Hubo un error al elimiar usuario, checa si existe'})
+        }
+      } catch (error) {
+        console.error('Hay un error para eliminar usuarios:', error);
+        res.status(401).json({message:'Hubo un error para eliminar al usuario.', error:error.message})
+      }
     }
 
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const upload = require('../middleware/cloudinary').upload;
 
 const authService = require('../Services/authService.js');
 const UsuarioController= require ('../Controllers/usuarioController.js');
@@ -80,7 +81,7 @@ const userController = new UsuarioController(userService)
  *       500:
  *         description: Error en el servidor
  */
-router.post('/register',(req,res) => userController.crearUsuario(req,res));
+router.post('/register',upload.single('imagen_perfil'),(req,res) => userController.crearUsuario(req,res));
 
 /**
  * @swagger
@@ -235,4 +236,167 @@ router.post('/login',(req,res)=> userController.login(req,res));
     res.json(response);
   });
 
-module.exports = router;
+
+
+
+  /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID único del usuario
+ *         nombre:
+ *           type: string
+ *           description: Nombre del usuario
+ *         apellido:
+ *           type: string
+ *           description: Apellido del usuario
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico del usuario
+ *         contraseña:
+ *           type: string
+ *           description: Contraseña del usuario (encriptada)
+ *         rol:
+ *           type: string
+ *           description: Rol del usuario (por defecto 'usuario')
+ *         resetToken:
+ *           type: string
+ *           description: Token de reseteo de contraseña (opcional)
+ *         imagen_perfil:
+ *           type: string
+ *           description: URL de la imagen de perfil del usuario
+ *       example:
+ *         id: 1
+ *         nombre: "Juan"
+ *         apellido: "Perez"
+ *         email: "juan@example.com"
+ *         contraseña: "$2b$10$abcde12345"
+ *         rol: "usuario"
+ *         resetToken: null
+ *         imagen_perfil: "https://example.com/profile.jpg"
+ */
+
+/**
+ * @swagger
+ * /usuarios:
+ *   get:
+ *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número de página (por defecto es 1)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Cantidad de registros por página (por defecto es 10)
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Usuario'
+ */
+  router.get('/usuarios',(req,res)=> userController.obtenerUsuario(req,res))
+
+/**
+ * @swagger
+ * /usuario/{id}:
+ *   get:
+ *     summary: Obtiene un usuario por ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario obtenido correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       404:
+ *         description: Usuario no encontrado
+ */
+  router.get('/usuario/:id', (req,res)=> userController.obtenerUsuarioId(req,res))
+
+/**
+ * @swagger
+ * /usuario/{id}:
+ *   put:
+ *     summary: Actualiza un usuario por ID con foto
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre del usuario
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo del usuario
+ *               imagen_perfil:
+ *                 type: string
+ *                 format: binary
+ *                 description: Foto de perfil del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado correctamente
+ *       400:
+ *         description: Error en la solicitud
+ *       404:
+ *         description: Usuario no encontrado
+ */
+  router.put('/usuario/:id', upload.single('imagen_perfil') , (req,res)=> userController.actualizarUsuario(req,res))
+/**
+ * @swagger
+ * /usuario/{id}:
+ *   delete:
+ *     summary: Elimina un usuario por ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado correctamente
+ *       404:
+ *         description: Usuario no encontrado
+ */
+  router.delete('/usuario/:id', (req,res)=> userController.eliminarUsuario(req,res))
+  
+  module.exports = router;
