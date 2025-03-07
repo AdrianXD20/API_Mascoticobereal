@@ -26,16 +26,15 @@ const productoController = new ProductoController(productoService);
  *           example: 1
  *         nombre:
  *           type: string
+ *           maxLength: 120
  *           example: "Collar para perro"
  *         marca:
  *           type: string
+ *           maxLength: 60
  *           example: "Marca Ejemplo"
  *         mascota:
- *           type: string
- *           example: "Perro"
- *         edad:
- *           type: string
- *           example: "Adulto"
+ *           type: integer
+ *           example: 1
  *         precio:
  *           type: number
  *           format: float
@@ -43,21 +42,36 @@ const productoController = new ProductoController(productoService);
  *         stock:
  *           type: integer
  *           example: 100
- *         idCaracteristicasExtras:
- *           type: integer
- *           example: 2
- *         imagen:
+ *         edad:
+ *           type: string
+ *           enum: ["Cachorro", "Adultos", "Ambos"]
+ *           example: "Adultos"
+ *         tamaño_mascota:
+ *           type: string
+ *           enum: ["Pequeño", "Mediano", "Grande"]
+ *           example: "Mediano"
+ *         imagen_producto:
  *           type: string
  *           example: "/uploads/collar-perro.jpg"
+ *         categoria:
+ *           type: integer
+ *           example: 2
+ *         peso:
+ *           type: number
+ *           format: float
+ *           example: 10.5
+ *         id_veterinario:
+ *           type: integer
+ *           example: 5
  *       required:
  *         - id
  *         - nombre
  *         - precio
- *         - imagen
+ *         - imagen_producto
  */
 
-/**
- * @swagger
+/** 
+ *  @swagger
  * /productos:
  *   get:
  *     summary: Obtener todos los productos
@@ -90,8 +104,8 @@ const productoController = new ProductoController(productoService);
  *         description: No se encontraron productos
  */
 router.get('/productos', verifyToken, (req, res) => productoController.obtenerProductos(req, res));
-
-/**
+ 
+/** 
  * @swagger
  * /productos/{id}:
  *   get:
@@ -135,16 +149,15 @@ router.get('/productos/:id', verifyToken, (req, res) => productoController.obten
  *             properties:
  *               nombre:
  *                 type: string
+ *                 maxLength: 120
  *                 example: "Collar para perro"
  *               marca:
  *                 type: string
+ *                 maxLength: 60
  *                 example: "Marca Ejemplo"
  *               mascota:
- *                 type: string
- *                 example: "Perro"
- *               edad:
- *                 type: string
- *                 example: "Adulto"
+ *                 type: integer
+ *                 example: 1
  *               precio:
  *                 type: number
  *                 format: float
@@ -152,9 +165,27 @@ router.get('/productos/:id', verifyToken, (req, res) => productoController.obten
  *               stock:
  *                 type: integer
  *                 example: 100
- *               imagen:
+ *               edad:
+ *                 type: string
+ *                 enum: ["Cachorro", "Adultos", "Ambos"]
+ *                 example: "Adultos"
+ *               tamaño_mascota:
+ *                 type: string
+ *                 enum: ["Pequeño", "Mediano", "Grande"]
+ *                 example: "Mediano"
+ *               imagen_producto:
  *                 type: string
  *                 format: binary
+ *               categoria:
+ *                 type: integer
+ *                 example: 2
+ *               peso:
+ *                 type: number
+ *                 format: float
+ *                 example: 10.5
+ *               id_veterinario:
+ *                 type: integer
+ *                 example: 5
  *     responses:
  *       201:
  *         description: Producto creado exitosamente
@@ -183,27 +214,10 @@ router.post('/productos', verifyToken, upload.single('imagen'), (req, res) => pr
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
- *                 example: "Collar para perro"
- *               marca:
- *                 type: string
- *                 example: "Marca Ejemplo"
- *               precio:
- *                 type: number
- *                 format: float
- *                 example: 49.99
- *               stock:
- *                 type: integer
- *                 example: 100
- *               imagen:
- *                 type: string
- *                 format: binary
- *       responses:
+ *             $ref: '#/components/schemas/Producto'
+ *     responses:
  *       200:
- *         description: Producto eliminado exitosamente
+ *         description: Producto actualizado exitosamente
  *       404:
  *         description: Producto no encontrado
  */
