@@ -25,16 +25,13 @@ const {verifyToken} = require('../middleware/authMiddleware')
  *           schema:
  *             type: object
  *             required:
- *               - nombre_cliente
  *               - id_veterinario
  *               - fecha_cita
  *               - hora_cita
  *               - razon
  *               - mascota
+ *               - cliente
  *             properties:
- *               nombre_cliente:
- *                 type: string
- *                 example: "Juan Pérez"
  *               id_veterinario:
  *                 type: integer
  *                 example: 1
@@ -52,6 +49,9 @@ const {verifyToken} = require('../middleware/authMiddleware')
  *               mascota:
  *                 type: integer
  *                 example: 3
+ *               cliente:
+ *                 type: integer
+ *                 example: 5
  *     responses:
  *       201:
  *         description: Cita creada exitosamente
@@ -64,7 +64,7 @@ router.post('/citas', CitasController.agendarCita);
  * @swagger
  * /citas/{id}:
  *   put:
- *     summary: Actualizar el estado de una cita (Confirmar o Rechazar)
+ *     summary: Actualizar el estado de una cita (Pendiente, Confirmada o Rechazada)
  *     tags: [Citas]
  *     parameters:
  *       - in: path
