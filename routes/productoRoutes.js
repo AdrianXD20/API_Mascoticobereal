@@ -50,7 +50,7 @@ const productoController = new ProductoController(productoService);
  *           type: string
  *           enum: ["Pequeño", "Mediano", "Grande"]
  *           example: "Mediano"
- *         imagen_producto:
+ *         imagen:
  *           type: string
  *           example: "/uploads/collar-perro.jpg"
  *         categoria:
@@ -67,7 +67,7 @@ const productoController = new ProductoController(productoService);
  *         - id
  *         - nombre
  *         - precio
- *         - imagen_producto
+ *         - imagen
  */
 
 /** 
@@ -173,7 +173,7 @@ router.get('/productos/:id', verifyToken, (req, res) => productoController.obten
  *                 type: string
  *                 enum: ["Pequeño", "Mediano", "Grande"]
  *                 example: "Mediano"
- *               imagen_producto:
+ *               imagen:
  *                 type: string
  *                 format: binary
  *               categoria:
@@ -214,7 +214,47 @@ router.post('/productos', verifyToken, upload.single('imagen'), (req, res) => pr
  *       content:
  *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Producto'
+ *             type : object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 maxLength: 120
+ *                 example: "Collar para perro"
+ *               marca:
+ *                 type: string
+ *                 maxLength: 60
+ *                 example: "Marca Ejemplo"
+ *               mascota:
+ *                 type: integer
+ *                 example: 1
+ *               precio:
+ *                 type: number
+ *                 format: float
+ *                 example: 49.99
+ *               stock:
+ *                 type: integer
+ *                 example: 100
+ *               edad:
+ *                 type: string
+ *                 enum: ["Cachorro", "Adultos", "Ambos"]
+ *                 example: "Adultos"
+ *               tamaño_mascota:
+ *                 type: string
+ *                 enum: ["Pequeño", "Mediano", "Grande"]
+ *                 example: "Mediano"
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *               categoria:
+ *                 type: integer
+ *                 example: 2
+ *               peso:
+ *                 type: number
+ *                 format: float
+ *                 example: 10.5
+ *               id_veterinario:
+ *                 type: integer
+ *                 example: 5
  *     responses:
  *       200:
  *         description: Producto actualizado exitosamente

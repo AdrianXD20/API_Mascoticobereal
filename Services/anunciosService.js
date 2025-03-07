@@ -10,18 +10,35 @@ class anunciosService{
         return anuncios.findByPk(Id)
     }
 
-    async crearAnuncios(n){
-
+    async crearAnuncios(newAdd){
+        return anuncios.create(newAdd);
     }
 
-    async actualizarAnuncios(Id,datosActualizado){
-
+    async actualizarAnuncios(id,updateAdd, imagen = null){
+        const add = await anuncios.findByPk(id);
+        if(add){
+            if(imagen){
+            updateAdd.imagen = imagen
+        }
+        const updates =await anuncios.update(updateAdd,{
+            where:{id:Id}
+        })
+            if(updates > 0){
+                return anuncios.findByPk(id)
+            }
     }
+    return null
+}
 
     async eliminarAnuncios(Id){
         const adds = await anuncios.findByFk(Id)
         if(adds){
-            return anuncios.destroy(Id)
+            return anuncios.destroy({
+                where:{id:Id}
+            })
         }
+        return null
     }
 }
+
+module.exports = anunciosService

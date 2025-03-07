@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexion'); 
-const caracteristicasExtras = require('./caracteristicasExtraModel');
-const CaracteristicaExtra = require('./caracteristicasExtraModel');
+const caracteristicas = require('./caracteristicasExtraModel');
+const { deepStrictEqual } = require('assert');
+
 
 const Productos = sequelize.define('Productos', {
   id: {
@@ -18,11 +19,7 @@ const Productos = sequelize.define('Productos', {
     allowNull: true,
   },
   mascota: {
-    type: DataTypes.STRING(50),
-    allowNull: true,
-  },
-  edad: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   precio: {
@@ -33,28 +30,48 @@ const Productos = sequelize.define('Productos', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  edad: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  },
+  tamaño_mascota: {
+    type: DataTypes.STRING(50),
+    allowNull: true
+  },
   imagen:{
     type: DataTypes.STRING,
     allowNull: true,
   },
-  idCaracteristicasExtras: {
+  categoria: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    references: {
-      model: 'CaracteristicasExtras', 
-      key: 'id',
-    },
   },
+  peso:{
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
+  id_veterinario: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  }
 }, {
   tableName: 'productos', 
   timestamps: false, 
 });
-
-Productos.belongsTo(CaracteristicaExtra,{
-    foreignKey: 'idCaracteristicasExtras',
+/*
+Productos.belongsTo(caracteristicas,{
+    foreignKey: 'id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-
+*/
 module.exports = Productos;
 
+/*/
+type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'categoria_productos', 
+      key: 'id',
+    },
+*/
