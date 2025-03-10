@@ -32,6 +32,9 @@ const User = sequelize.define('User', {
   resetToken: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  imagen_perfil: {
+    type: DataTypes.STRING, 
   }  
 }, {
   tableName: 'usuarios',

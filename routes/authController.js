@@ -361,14 +361,19 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *               nombre:
  *                 type: string
  *                 description: Nombre del usuario
+ *               apellido:
+ *                 type: string
+ *                 description: Apellido del usuario
  *               email:
  *                 type: string
  *                 format: email
- *                 description: Correo del usuario
+ *               contraseña:
+ *                 type: string
+ *                 description: Contraseña del usuario (encriptada)
  *               imagen_perfil:
  *                 type: string
- *                 format: binary
- *                 description: Foto de perfil del usuario
+ *                 format: binary 
+ *                 description: URL de la imagen de perfil del usuario
  *     responses:
  *       200:
  *         description: Usuario actualizado correctamente

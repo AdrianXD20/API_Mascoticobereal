@@ -53,10 +53,10 @@ class UsuarioController{
       try {
         const id= req.params.id
         const user = await this.userService.obtenerUsuarioId(id)
-        if(user){
-          res.status(201).json(user)
+        if(!user){
+          return res.status(401).json({message:'Este Id no existe o no se encuentra disponible'})
         }
-        res.status(401).json({message:'Este Id no existe o no se encuentra disponible'})
+          return res.status(201).json(user) 
       } catch (error) {
         console.error('Error al obtener usarios por Id:', error);
         res.status(401).json({message: 'Tuvimos un error para obtener usuarios por Id.', error: error.message})
