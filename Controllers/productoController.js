@@ -86,6 +86,21 @@ class ProductoController {
       res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
     }
   }
+
+  async ObtenerProductosByName(req,res){
+    try {
+      const nombre = req.query.nombre;
+      const productos = await this.productoService.ObtenerProductosByName(nombre);
+      if (productos.length > 0) {
+        res.status(201).json(productos)
+      } else {
+        res.status(501).json({mesage: 'No se encontraron los productos'})
+      }
+    } catch (error) {
+      console.error('Error al obtener productos por su nombre: ', error);
+      res.status(501).json({message: 'Error al buscar productos por nombre', error: error,message})
+    }
+  }
 }
 
 module.exports = ProductoController;

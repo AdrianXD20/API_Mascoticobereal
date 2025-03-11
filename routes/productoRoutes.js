@@ -14,6 +14,29 @@ const productoRepository = new ProductoRepository();
 const productoService = new ProductoService(productoRepository);
 const productoController = new ProductoController(productoService);
 
+
+
+/**
+ * @swagger
+ * /productos/nombre:
+ *   get:
+ *     summary: Obtener productos por nombre
+ *     description: Busca productos cuyo título coincida parcialmente con el nombre ingresado.
+ *     parameters:
+ *       - in: query
+ *         name: nombre
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Parte del título del producto que se desea buscar.
+ *     responses:
+ *       200:
+ *         description: Lista de productos encontrados.
+ *       404:
+ *         description: No se encontraron productos con ese nombre.
+ */
+router.get('/productos/nombre', (req,res)=> productoController.ObtenerProductosByName(req,res));
+
 /**
  * @swagger
  * components:
@@ -285,5 +308,6 @@ router.put('/productos/:id', verifyToken, upload.single('imagen'), (req, res) =>
  *         description: Producto no encontrado
  */
 router.delete('/productos/:id', verifyToken, (req, res) => productoController.eliminarProducto(req, res));
+
 
 module.exports = router;

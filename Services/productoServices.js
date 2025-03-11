@@ -1,4 +1,6 @@
+const { Error } = require('sequelize');
 const Productos = require('../Models/productosModel')
+const {Op} = require('sequelize')
 
 class ProductoService {
   
@@ -41,6 +43,23 @@ class ProductoService {
       }
         return null
     }
+
+    async ObtenerProductosByName(nombre){
+      try {
+        const productos = await Productos.findAll({
+          where : {
+            nombre : {
+              [Op.like] : `%${nombre}%` 
+            }
+          }
+        });
+        return productos;
+      } catch (error) {
+        console.error("Error en la busqueda de Productos por su nombre:", error);
+        throw new Error("Error al obtener productos por nombre")
+      }
+    }
+
   }
   
   module.exports = ProductoService;
