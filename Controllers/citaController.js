@@ -31,7 +31,7 @@ exports.obtenerCitasPorVeterinario = async (req, res) => {
 
 exports.ObtenerCitasByUserId = async (req,res) => {
     try{
-        const citas = await citaService.ObtenerCitasByUserId(req.params.id);
+        const citas = await citaService.ObtenerCitasByUserId(req.params.cliente);
         res.json(citas)
     }catch(error){
         res.status(401).json({error: error.message})

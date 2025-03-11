@@ -119,13 +119,13 @@ router.get('/citas/veterinario/:id_veterinario', CitasController.obtenerCitasPor
 
 /**
  * @swagger
- * /citas/usuario/{id}:
+ * /citas/usuario/{cliente}:
  *   get:
  *     summary: Obtener todas las citas de un usuario
  *     tags: [Citas]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: cliente
  *         schema:
  *           type: integer
  *         required: true
@@ -136,7 +136,7 @@ router.get('/citas/veterinario/:id_veterinario', CitasController.obtenerCitasPor
  *       400:
  *         description: Error en la solicitud
  */
-router.get('/citas/usuario/:id', CitasController.ObtenerCitasByUserId);
+router.get('/citas/usuario/:cliente', CitasController.ObtenerCitasByUserId);
 
 
 module.exports = router;

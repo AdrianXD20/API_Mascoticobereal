@@ -68,8 +68,8 @@ const obtenerCitasPorVeterinario = async (id_veterinario) => {
 };
 
 //Obtener citas de un cliente
-const ObtenerCitasByUserId = async (id) => {
-    return await Cita.findAll({where:{id}});
+const ObtenerCitasByUserId = async (cliente) => {
+    return await Cita.findAll({where:{cliente}});
 }
 
 module.exports = { agendarCita, actualizarEstadoCita, obtenerCitasPorVeterinario, ObtenerCitasByUserId };
