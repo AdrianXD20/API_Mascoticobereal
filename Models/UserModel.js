@@ -38,7 +38,10 @@ const User = sequelize.define('User', {
   },
   direccion : {
     type : DataTypes.STRING,
-  }  
+  },
+  telefono : {
+    type : DataTypes.STRING(10)
+  } 
 }, {
   tableName: 'usuarios',
   timestamps: false,

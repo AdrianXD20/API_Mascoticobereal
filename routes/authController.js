@@ -274,6 +274,9 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *         direccion:
  *           type: string
  *           description: Poner donde vives
+ *         telefono:
+ *           type: string
+ *           description: Tu fon apa
  *       example:
  *         id: 1
  *         nombre: "Juan"
@@ -381,6 +384,9 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *               direccion:
  *                 type: string
  *                 description: Poner donde vives
+ *               telefono:
+ *                 type: string
+ *                 description: Tu fon apa
  *     responses:
  *       200:
  *         description: Usuario actualizado correctamente
