@@ -117,5 +117,26 @@ router.put('/citas/:id', CitasController.actualizarEstadoCita);
  */
 router.get('/citas/veterinario/:id_veterinario', CitasController.obtenerCitasPorVeterinario);
 
+/**
+ * @swagger
+ * /citas/usuario/{id}:
+ *   get:
+ *     summary: Obtener todas las citas de un usuario
+ *     tags: [Citas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario para obtener sus citas
+ *     responses:
+ *       200:
+ *         description: Lista de citas del usuario
+ *       400:
+ *         description: Error en la solicitud
+ */
+router.get('/citas/usuario/:id', CitasController.ObtenerCitasByUserId);
+
 
 module.exports = router;
