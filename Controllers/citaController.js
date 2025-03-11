@@ -28,3 +28,12 @@ exports.obtenerCitasPorVeterinario = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+exports.ObtenerCitasByUserId = async (req,res) => {
+    try{
+        const citas = await citaService.ObtenerCitasByUserId(req.params.id);
+        res.json(citas)
+    }catch(error){
+        res.status(401).json({error: error.message})
+    }
+};

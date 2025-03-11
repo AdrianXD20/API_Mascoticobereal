@@ -271,6 +271,9 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *         imagen_perfil:
  *           type: string
  *           description: URL de la imagen de perfil del usuario
+ *         direccion:
+ *           type: string
+ *           description: Poner donde vives
  *       example:
  *         id: 1
  *         nombre: "Juan"
@@ -280,6 +283,7 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *         rol: "usuario"
  *         resetToken: null
  *         imagen_perfil: "https://example.com/profile.jpg"
+ *         direccion: calle 33 entre 34 y 36, col Cola de Tarzan
  */
 
 /**
@@ -374,6 +378,9 @@ router.post('/login',(req,res)=> userController.login(req,res));
  *                 type: string
  *                 format: binary 
  *                 description: URL de la imagen de perfil del usuario
+ *               direccion:
+ *                 type: string
+ *                 description: Poner donde vives
  *     responses:
  *       200:
  *         description: Usuario actualizado correctamente

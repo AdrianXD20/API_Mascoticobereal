@@ -23,26 +23,21 @@ const ventaController = new VentaController(ventaService);
  *         id_producto:
  *           type: integer
  *           example: 1001
- *         id_cliente:
+ *         id_usuario:
  *           type: integer
  *           example: 5001
- *         tipo_mascota:
- *           type: string
- *           example: "Perro"
- *         categoria:
- *           type: string
- *           example: "Alimento"
- *         precio:
- *           type: number
- *           format: decimal
- *           example: 459.99
+ *         fecha:
+ *           type: date
+ *           example: 10/03/2025
+ *         cantidad:
+ *           type: interger
+ *           example: 2
  *       required:
  *         - id
  *         - id_producto
- *         - id_cliente
- *         - tipo_mascota
- *         - categoria
- *         - precio
+ *         - id_usuario
+ *         - fecha
+ *         - cantidad
  */
 
 /**

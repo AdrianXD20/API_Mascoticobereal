@@ -35,6 +35,9 @@ const User = sequelize.define('User', {
   },
   imagen_perfil: {
     type: DataTypes.STRING, 
+  },
+  direccion : {
+    type : DataTypes.STRING,
   }  
 }, {
   tableName: 'usuarios',

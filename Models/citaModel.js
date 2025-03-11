@@ -9,14 +9,10 @@ const Cita = sequelize.define('citas', {
      type: DataTypes.INTEGER,
     autoIncrement: true, 
     primaryKey: true 
-  },
-  nombre_cliente: { 
-    type: DataTypes.STRING(120), 
-    allowNull: false },
-  id_veterinario: { 
+  },id_veterinario: { 
     type: DataTypes.INTEGER, 
-    allowNull: false },
-  fecha_cita: {
+    allowNull: false 
+  },fecha_cita: {
      type: DataTypes.DATEONLY, 
      allowNull: false },
   hora_cita: { 
@@ -31,6 +27,9 @@ const Cita = sequelize.define('citas', {
   estado: {
      type: DataTypes.ENUM('pendiente', 'confirmada', 'rechazada'), defaultValue: 'pendiente' 
     },
+    cliente : {
+      type : DataTypes.INTEGER
+    }
   },{
       tableName: 'citas',
         timestamps: false

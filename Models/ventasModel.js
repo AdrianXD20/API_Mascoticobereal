@@ -17,7 +17,7 @@ const Ventas = sequelize.define('Ventas', {
       key: 'id',
     },
   },
-  id_cliente: {
+  id_usuario: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
@@ -25,18 +25,14 @@ const Ventas = sequelize.define('Ventas', {
       key: 'id',
     },
   },
-  tipo_mascota: {
-    type: DataTypes.STRING(50),
+  fecha: {
+    type: DataTypes.DATE,
     allowNull: true,
   },
-  categoria: {
-    type: DataTypes.STRING(50),
+  cantidad: {
+    type: DataTypes.INTEGER,
     allowNull: true,
-  },
-  precio: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: true,
-  },
+  }
 }, {
   tableName: 'ventas', 
   timestamps: false, 

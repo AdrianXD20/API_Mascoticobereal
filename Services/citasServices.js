@@ -1,3 +1,4 @@
+const { Where } = require('sequelize/lib/utils');
 const Cita = require('../Models/citaModel');
 const DisponibilidadVeterinario = require('../Models/disponibilidad_veterinarioModel');
 const nodemailer = require('nodemailer');
@@ -66,4 +67,9 @@ const obtenerCitasPorVeterinario = async (id_veterinario) => {
     return await Cita.findAll({ where: { id_veterinario } });
 };
 
-module.exports = { agendarCita, actualizarEstadoCita, obtenerCitasPorVeterinario };
+//Obtener citas de un cliente
+const ObtenerCitasByUserId = async (id) => {
+    return await Cita.findAll({where:{id}});
+}
+
+module.exports = { agendarCita, actualizarEstadoCita, obtenerCitasPorVeterinario, ObtenerCitasByUserId };
