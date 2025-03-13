@@ -11,10 +11,11 @@ class UserService {
   constructor() {}
 
   async crearUsuario(nuevoUsuario) {
+    console.log('Datos de como llegan al servicio: ', nuevoUsuario)
     try {
       
-      const hashedPassword = await bcrypt.hash(nuevoUsuario.contraseña, 10);
-      nuevoUsuario.contraseña = hashedPassword;
+      const hashedPassword = await bcrypt.hash(nuevoUsuario.password, 10);
+      nuevoUsuario.password = hashedPassword;
 
       
       const usuarioCreado = await User.create(nuevoUsuario);
@@ -34,7 +35,7 @@ class UserService {
       }
 
       
-      const isPasswordValid = await bcrypt.compare(contraseña, user.contraseña);
+      const isPasswordValid = await bcrypt.compare(contraseña, user.password);
       if (!isPasswordValid) {
         throw new Error('Contraseña incorrecta');
       }
@@ -58,7 +59,7 @@ class UserService {
     if (!user || user.resetTokenExpira < new Date()) return null; // Token inválido o expirado
 
     const hashedPassword = await bcrypt.hash(nuevaContraseña, 10);
-    await user.update({ contraseña: hashedPassword, resetToken: null, resetTokenExpira: null });
+    await user.update({ password: hashedPassword, resetToken: null, resetTokenExpira: null });
 
     return { message: 'Contraseña actualizada correctamente' };
   }

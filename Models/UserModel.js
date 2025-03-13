@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
-  contraseña: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -40,7 +40,7 @@ const User = sequelize.define('User', {
     type : DataTypes.STRING,
   },
   telefono : {
-    type : DataTypes.STRING(10)
+    type : DataTypes.STRING(12)
   } 
 }, {
   tableName: 'usuarios',

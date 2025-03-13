@@ -24,14 +24,9 @@ const userController = new UsuarioController(userService)
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
- *             required:
- *               - nombre
- *               - apellido
- *               - email
- *               - contraseña
  *             properties:
  *               nombre:
  *                 type: string
@@ -43,26 +38,21 @@ const userController = new UsuarioController(userService)
  *                 type: string
  *                 format: email
  *                 description: Correo electrónico del usuario (debe ser único)
- *               contraseña:
+ *               password:
  *                 type: string
  *                 description: Contraseña del usuario (mínimo 6 caracteres)
+ *               imagen_perfil:
+ *                 type: string
+ *                 format: binary
+ *               direccion:
+ *                 type: string
+ *                 description: Donde vives rey
+ *               telefono:
+ *                 type: string
+ *                 description: Tu numero de telefono 
  *     responses:
  *       201:
  *         description: Usuario registrado exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 nombre:
- *                   type: string
- *                   description: Nombre del usuario registrado
- *                 apellido:
- *                   type: string
- *                   description: Apellido del usuario registrado
- *                 email:
- *                   type: string
- *                   description: Correo electrónico del usuario registrado
  *       400:
  *         description: Error de validación
  *         content:

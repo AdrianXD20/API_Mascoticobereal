@@ -35,6 +35,12 @@ class ventaService{
         }
             return null
     }
+
+    async ventasByIdUser(UserId){
+        return ventas.findAll({
+            where: {id_usuario : UserId}
+        })
+    }
 }
 
 module.exports = ventaService

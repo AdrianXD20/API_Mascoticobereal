@@ -6,19 +6,22 @@ class UsuarioController{
     }
 
     async crearUsuario(req, res) {
-        try {
-          if(!req.file){
-            return res.status(400).json({ message: 'La imagen es obligatoria' });
-          }
-          const imagen = req.file.path
-          const nuevoUsuario = {...req.body, imagen_perfil: imagen};
+      console.log('como se viene: ', req.body)
+      try {
+  
+          // Si se subió una imagen, usa la URL; si no, deja el campo en null o usa una imagen por defecto
+          const imagenURL = req.file ? req.file.path : null;
+  
+          const nuevoUsuario = { ...req.body, imagen_perfil: imagenURL };
+          console.log('Los datos están llegando de esta forma:', nuevoUsuario);
+  
           const User = await this.userService.crearUsuario(nuevoUsuario);
-          res.status(201).json(User);
-        } catch (error) {
-          console.error('Error creando nuevo Usuario :', error); 
+          return res.status(201).json(User);
+      } catch (error) {
+          console.error('Error creando nuevo Usuario :', error);
           res.status(500).json({ message: 'Error al crear el usuario :(', error: error.message });
-        }
       }
+  }
 
       async login(req, res) {
         try {
@@ -86,7 +89,7 @@ class UsuarioController{
     async eliminarUsuario(req,res){
       try {
         const id = req.params.id;
-        const user = await this.userService.eliminarUsuario(id)
+        const user = await this.userService.eliminarUsuarios(id)
         if(user){
           res.status(201).json(user)
         }else{

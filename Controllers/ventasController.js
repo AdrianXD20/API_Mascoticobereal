@@ -78,6 +78,21 @@ class ventaController{
             res.status(500).json({message:'Tuvimos un error al eliminar la. venta', error:error.message})
         }
     }
+
+    async ventasByUserId(req,res){
+        try {
+            const UserId = req.params.id_usuario;
+            const ventas= await this.ventaService.ventasByUserId(UserId)
+            if (ventas.length > 0){
+                res.json(ventas)
+            }else{
+                res.status(404).json({message:'Error no hay ese ID'})
+            }
+        } catch (error) {
+            console.error('Error en la consulta: ', error),
+            res.status(500).json({message: 'Error en la consulta', error: error.message})
+        }
+    }
 }
 
 module.exports = ventaController;

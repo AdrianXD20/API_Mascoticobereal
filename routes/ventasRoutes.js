@@ -178,4 +178,5 @@ router.put('/ventas/:id', verifyToken, (req, res) => ventaController.actualizarV
  */
 router.delete('/ventas/:id', verifyToken, (req, res) => ventaController.eliminarVenta(req, res));
 
+router.get('/ventas/:id_usuario', (req,res)=> ventaController.ventasByUserId(req,res))
 module.exports = router;
