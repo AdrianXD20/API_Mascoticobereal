@@ -9,7 +9,7 @@ const Ventas = sequelize.define('Ventas', {
     primaryKey: true,
     autoIncrement: true,
   },
-  id_producto: {
+  id_productos: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {

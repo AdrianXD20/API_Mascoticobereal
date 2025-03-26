@@ -20,7 +20,7 @@ const ventaController = new VentaController(ventaService);
  *         id:
  *           type: integer
  *           example: 1
- *         id_producto:
+ *         id_productos:
  *           type: integer
  *           example: 1001
  *         id_usuario:
@@ -34,7 +34,7 @@ const ventaController = new VentaController(ventaService);
  *           example: 2
  *       required:
  *         - id
- *         - id_producto
+ *         - id_productos
  *         - id_usuario
  *         - fecha
  *         - cantidad
