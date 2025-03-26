@@ -32,8 +32,7 @@ const allowed = [
     'CC-15-31-A0-5D-75',
     'CC-15-31-A0-5D-76',/*IP de Alexander*/
     'http://192.168.0.104:8081',/*IP de Frenks*/
-    'http://mascotico-luna.vercel.app',/*MascoTico WEB*/
-    'https://mascotico-luna.vercel.app/SignIn',/*MascoTico WEB 2.0 CREO*/
+    'https://mascotico-luna.vercel.app',/*MascoTico WEB*/
     'https://mascotico-luna-pjzx81ixt-alexyah064s-projects.vercel.app/', /*Front de Admin */
     'https://mascotico-web.vercel.app',
     'mysql://uq92kg8809ftify2:GzKZ4C98MmKvQvv32tP1@bpdddt3swjtee4chka49-mysql.services.clever-cloud.com:3306/bpdddt3swjtee4chka49%20Host%20bpdddt3swjtee4chka49-mysql.services.clever-cloud.com'
